@@ -1,0 +1,17 @@
+node_modules
+**/dist/
+*/dist/
+echidna
+securify2/
+**/__pycache__
+*/__pycache__
+securifyv2
+venv
+venv/
+__pycache__/
+.vscode
+.env
+config
+*.env
+config.env
+logs
