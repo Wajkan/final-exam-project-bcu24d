@@ -1,0 +1,59 @@
+/* Override the player colors */
+.rhap_container {
+  background-color: #2c3e50 !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  width: 100% !important;
+
+}
+
+/* Header (track info) */
+.rhap_header {
+  color: #ecf0f1 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 15px !important;
+}
+
+/* Main controls (play/pause) */
+.rhap_main-controls-button {
+  color: #3498db !important;
+}
+
+.rhap_main-controls-button:hover {
+  color: #2980b9 !important;
+}
+
+/* Skip buttons */
+.rhap_skip-button {
+  color: #ecf0f1 !important;
+}
+
+/* Progress bar */
+.rhap_progress-filled {
+  background-color: #3498db !important;
+}
+
+.rhap_progress-indicator {
+  background-color: #3498db !important;
+  border: 2px solid #fff !important;
+}
+
+/* Time display */
+.rhap_time {
+  color: #ecf0f1 !important;
+}
+
+/* Volume controls */
+.rhap_volume-button {
+  color: #ecf0f1 !important;
+}
+
+.rhap_volume-indicator {
+  background-color: #3498db !important;
+}
+
+.rhap_volume-bar {
+  background-color: #34495e !important;
+}
