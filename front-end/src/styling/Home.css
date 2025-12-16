@@ -1,0 +1,24 @@
+.home-wrapper {
+
+    padding: 20px;
+    margin: auto;   
+    max-width: 1200px;
+
+}
+
+h1 {
+
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 400;
+    margin: 20px;
+
+}
+
+p {
+
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 10px;
+
+}
