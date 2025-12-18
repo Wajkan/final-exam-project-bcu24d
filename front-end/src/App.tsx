@@ -1,5 +1,5 @@
 import { RouterProvider } from 'react-router-dom'
-import { Router } from './Router'
+import { router } from './routes/Router'
 
 import { WagmiProvider } from 'wagmi'
 import { wagmiConfig } from './config/wagmi'
@@ -18,7 +18,7 @@ function App() {
 
         <QueryClientProvider client={ queryClient }>
 
-            <RouterProvider router={ Router } />
+            <RouterProvider router={ router } />
 
         </QueryClientProvider>
 
