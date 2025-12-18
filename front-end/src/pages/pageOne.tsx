@@ -1,17 +1,29 @@
-import { useWriteContract, useConnection} from 'wagmi'
+import { useWriteContract, useConnection, useReadContract } from 'wagmi'
 import { parseEther } from 'viem'
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../config/smartConfig'
 
 const PageOne = () => {
   
-  const { isConnected } = useConnection();
+  
+  const { address, isConnected } = useConnection();
   const  writeContract  = useWriteContract();
 
+  
+  const result = useReadContract({
+
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'hasActiveSubscription',
+    args: address ? [address] : undefined,
+
+  });
+
+  
   const handleSubscribe = () => {
 
     writeContract.mutate(
       {
-        
+
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
         functionName: 'subscribe',
@@ -34,18 +46,28 @@ const PageOne = () => {
   }
 
 
+
   return (
+
     <div>
 
-      <h1>Please Subscribe to my  music platform</h1>
-      
-      <button onClick={handleSubscribe} disabled={!isConnected}>
+          <h1>Subscribe</h1>
 
-        Subscribe (0.02 ETH)
+          {!isConnected && <p>Please connect your wallet first</p>}
+                
+          {result.data ? (
 
-      </button>
+            <button>Subscription Active ✅</button>
 
-      {!isConnected && <p>Please connect your wallet first</p>}
+          ) : (
+
+            <button onClick={handleSubscribe} disabled={!isConnected}>
+
+              Subscribe (0.02 ETH)
+
+            </button>
+
+          )}
 
     </div>
 
