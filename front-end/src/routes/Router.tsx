@@ -1,14 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import Home from './pages/Home'
-import PageOne from './pages/pageOne'
-import PageTwo from './pages/pageTwo'
-import PageThree from './pages/pageThree'
+import Home from '../pages/Home'
+import PageOne from '../pages/pageOne'
+import PageTwo from '../pages/pageTwo'
+import PageThree from '../pages/pageThree'
 
-import Layout from './components/Layout'
+import Layout from '../components/Layout'
 
 
-export const Router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,

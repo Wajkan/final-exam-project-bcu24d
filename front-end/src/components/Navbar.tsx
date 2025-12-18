@@ -1,19 +1,23 @@
 import { Link } from 'react-router-dom'
+import { useConnection } from 'wagmi'
+import { WalletOptions } from './WalletOptions'
+import { Connection } from './Connection'
 import '../styling/Navbar.css'
 
-
 const Navbar = () => {
+  const { address } = useConnection()
+
   return (
-
     <nav className="navbar">
-
-      <Link to="/"         className="navbar-link">Home</Link>
-      <Link to="/pageone"   className="navbar-link">Page One</Link>
-      <Link to="/pagetwo"   className="navbar-link">Page Two</Link>
+      <Link to="/" className="navbar-link">Home</Link>
+      <Link to="/pageone" className="navbar-link">Page One</Link>
+      <Link to="/pagetwo" className="navbar-link">Page Two</Link>
       <Link to="/pagethree" className="navbar-link">Page Three</Link>
-
+      
+      <div>
+        {address ? <Connection /> : <WalletOptions />}
+      </div>
     </nav>
-
   )
 }
 
