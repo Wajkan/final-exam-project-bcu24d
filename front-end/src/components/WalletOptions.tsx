@@ -6,7 +6,7 @@ import { wagmiConfig } from '../config/wagmi'
 
 
 export function WalletOptions() {
-    
+
   const connectors = useConnectors()
   
   return connectors.map((connector) => (
@@ -16,6 +16,7 @@ export function WalletOptions() {
       onClick={() => connect(wagmiConfig, { connector })}
     />
   ))
+  
 }
 
 function WalletOption({
