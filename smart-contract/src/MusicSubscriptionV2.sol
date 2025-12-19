@@ -1,18 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract MusicSubscription {
+contract MusicSubscriptionV2 {
 
     // STATE VARIABLES STATE VARIABLES STATE VARIABLES STATE VARIABLES
     
     address public admin;
     uint public subscriptionPrice = 0.02 ether;
     
-    // Hardcoded artist wallets - Replace with your MetaMask addresses
-    address public artist1 = 0x0000000000000000000000000000000000000001;
-    address public artist2 = 0x0000000000000000000000000000000000000002;
-    address public artist3 = 0x0000000000000000000000000000000000000003;
-    
+    // Dynamic artist array
+    address[] public artists;
     
     // Track active subscriptions
     mapping(address => bool) public hasActiveSubscription;
@@ -23,6 +20,8 @@ contract MusicSubscription {
     event SubscriptionCreated(address indexed subscriber, uint amount);
     event PayoutCompleted(address indexed subscriber, uint totalAmount);
     event ArtistPaid(address indexed artist, uint amount, uint percentage);
+    event ArtistAdded(address indexed artist);
+    event ArtistRemoved(address indexed artist);
     
     // CONSTRUCTOR CONSTRUCTOR CONSTRUCTOR CONSTRUCTOR
     
@@ -44,6 +43,23 @@ contract MusicSubscription {
     
     // FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS FUNCTIONS
     
+    // Admin adds an artist
+    function addArtist(address artistAddress) public onlyAdmin {
+        require(artistAddress != address(0), "Invalid artist address");
+        artists.push(artistAddress);
+        emit ArtistAdded(artistAddress);
+    }
+    
+    // Get all artists
+    function getArtists() public view returns (address[] memory) {
+        return artists;
+    }
+    
+    // Get artist count
+    function getArtistCount() public view returns (uint) {
+        return artists.length;
+    }
+    
     // User subscribes and pays
     function subscribe() public payable {
         require(msg.value == subscriptionPrice, "Incorrect subscription amount");
@@ -56,43 +72,32 @@ contract MusicSubscription {
     }
     
     // User triggers payout after listening session
-    function payoutToArtists(uint percentage1, uint percentage2, uint percentage3) public hasSubscription {
+    // Percentages array must match artists array length
+    function payoutToArtists(uint[] memory percentages) public hasSubscription {
+        require(percentages.length == artists.length, "Percentages must match artist count");
         
         // Validate percentages add up to 100
-        require(percentage1 + percentage2 + percentage3 == 100, "Percentages must add up to 100");
+        uint totalPercentage = 0;
+        for (uint i = 0; i < percentages.length; i++) {
+            totalPercentage += percentages[i];
+        }
+        require(totalPercentage == 100, "Percentages must add up to 100");
         
         uint amount = subscriptionAmount[msg.sender];
         require(amount > 0, "No funds to distribute");
-        
-        // Calculate individual payouts
-        uint payout1 = (amount * percentage1) / 100;
-        uint payout2 = (amount * percentage2) / 100;
-        uint payout3 = (amount * percentage3) / 100;
         
         // Reset subscription before sending (reentrancy protection)
         hasActiveSubscription[msg.sender] = false;
         subscriptionAmount[msg.sender] = 0;
         
         // Send payments to artists
-        payable(artist1).transfer(payout1);
-        payable(artist2).transfer(payout2);
-        payable(artist3).transfer(payout3);
+        for (uint i = 0; i < artists.length; i++) {
+            uint payout = (amount * percentages[i]) / 100;
+            payable(artists[i]).transfer(payout);
+            emit ArtistPaid(artists[i], payout, percentages[i]);
+        }
         
-        // Emit events
-        emit ArtistPaid(artist1, payout1, percentage1);
-        emit ArtistPaid(artist2, payout2, percentage2);
-        emit ArtistPaid(artist3, payout3, percentage3);
         emit PayoutCompleted(msg.sender, amount);
-    }
-    
-    // Admin can update artist addresses if needed
-    function setArtists(address _artist1, address _artist2, address _artist3) public onlyAdmin {
-        require(_artist1 != address(0) && _artist2 != address(0) && _artist3 != address(0), 
-                "Invalid artist addresses");
-        
-        artist1 = _artist1;
-        artist2 = _artist2;
-        artist3 = _artist3;
     }
     
     // Check contract balance
