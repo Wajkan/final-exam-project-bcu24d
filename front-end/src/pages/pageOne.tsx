@@ -19,14 +19,6 @@ const PageOne = () => {
   });
 
 
-    // Debug logs
-  console.log('Address:', address)
-  console.log('Contract Address:', CONTRACT_ADDRESS)
-  console.log('Result Status:', result.status)
-  console.log('Result Data:', result.data)
-  console.log('Result Error:', result.error)
-
-
   
   const handleSubscribe = () => {
 
