@@ -4,6 +4,7 @@ import 'react-h5-audio-player/lib/styles.css'
 import '../styling/AudioPlayer.css'
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../config/smartConfig'
 import { useWriteContract, useConnection } from 'wagmi'
+import '../styling/pageThree.css'
 
 interface Track {
 
@@ -15,136 +16,133 @@ interface Track {
 
 const playlist: Track[] = [
   {
+
     src: '/audio/Burgundy-Chances.mp3',
     title: 'Chances',
     artist: 'Burgundy'
+
   },
   {
+
     src: '/audio/Dagored-Happiness-In-My-Soul.mp3',
     title: 'Dagored',
     artist: 'Happiness In My Soul'
+
   },
   {
+
     src: '/audio/Moavii-Foreign.mp3',
     title: 'Foreign',
     artist: 'Moavii'
+
   }
 ]
-
 
 const PageThree = () => {
 
 
-  const [ currentTrack, setCurrentTrack ] = useState( 0 );
+  // Set current track for music player
+  const [currentTrack, setCurrentTrack] = useState(0)
+  
 
-  const [ listeningTime, setListeningTime ] = useState( [0, 0, 0] );  // Artist 1 , 2 , 3 
+  // Count seconds played per song
+  const [artistOneSeconds, setArtistOneSeconds] = useState(0)
+  const [artistTwoSeconds, setArtistTwoSeconds] = useState(0)
+  const [artistThreeSeconds, setArtistThreeSeconds] = useState(0)
 
-  const { address, isConnected } = useConnection();
-  const { data: hash, writeContract } = useWriteContract();
-  // const writeContract = useWriteContract();
+
+  // Wagmi
+  const { address, isConnected } = useConnection()
+  const writeContract = useWriteContract()
 
 
-  // CONTROLLER SETTINGS
+  // Change track
   const handleClickPrevious = () => {
 
-    setCurrentTrack((prev) => 
-      prev === 0 ? playlist.length - 1 : prev - 1
-    )
+    if (currentTrack === 0) {
 
+      setCurrentTrack(playlist.length - 1)
+
+    } else {
+
+      setCurrentTrack(currentTrack - 1)
+
+    }
   }
 
   const handleClickNext = () => {
-    
-    setCurrentTrack((prev) => 
-      (prev + 1) % playlist.length
-    )
 
-  }
+    if (currentTrack === playlist.length - 1) {
 
-  // LISTENING TIME CALCULATIONS
-  const handleListeningTime = () => {
-    
-    setListeningTime(playtimeCount => {
+      setCurrentTrack(0)
 
-      const newPlaytime = [...playtimeCount]
-      
-      newPlaytime [ currentTrack ] = newPlaytime [ currentTrack ] + 1
-      
-      return newPlaytime;
-    
-    })
+    } else {
 
-  };
-
-
-    const calculateListeningTimeModulus = () => {
-
-      const total = listeningTime.reduce(( sum, time ) => sum + time, 0)
-
-      if (total === 0) return [ 0, 0, 0 ]
-      
-      return listeningTime.map(time => Math.round((time / total) * 100))
+      setCurrentTrack(currentTrack + 1)
 
     }
+  }
 
-  console.log('Listening Time:', listeningTime) 
+  // Listeningtime per artist
+  const handleListeningTime = () => {
 
-  // HANDLE PAYOUT TO ARTISTS
+    if (currentTrack === 0) {
 
-  console.log('Transaction hash:', hash)
+      setArtistOneSeconds(artistOneSeconds + 1)
+
+    } else if (currentTrack === 1) {
+
+      setArtistTwoSeconds(artistTwoSeconds + 1)
+
+    } else if (currentTrack === 2) {
+
+      setArtistThreeSeconds(artistThreeSeconds + 1)
+
+    }
+  }
 
 
+  // Send seconds played to smart contract
   const handlePaymentToArtists = () => {
 
-    const payoutPercentage = calculateListeningTimeModulus()
+    const listeningSeconds = [
+      BigInt(artistOneSeconds),
+      BigInt(artistTwoSeconds),
+      BigInt(artistThreeSeconds)
+    ]
 
-    const payoutPercentageAsBigInt = payoutPercentage.map(p => BigInt(p)) 
+    console.log('Paying out based on seconds:', listeningSeconds)
 
-    console.log('Paying out:', payoutPercentageAsBigInt)
-  
-    writeContract({
-
+    writeContract.mutate({
       address: CONTRACT_ADDRESS,
       abi: CONTRACT_ABI,
       functionName: 'payoutToArtists',
-      args: [payoutPercentageAsBigInt]
-      
+      args: [listeningSeconds]
     })
+
   }
 
 
   return (
-    <>
-  
-<div>
 
- <h2>Listening Time</h2>
-  
-    <ul>
-
-      {playlist.map((track, index) => (
-
-      <li key= { index }>
+    <div className="page-three-wrapper">
       
-        { track.artist } : {listeningTime[ index ]} seconds ({calculateListeningTimeModulus()[index]}%);
-      
-      </li>
+      <div className="listening-time">
 
-      ))}
+        <h2>Listening Time</h2>
+        
+        <ul>
+          <li>{playlist[0].artist}: {artistOneSeconds} seconds</li>
+          <li>{playlist[1].artist}: {artistTwoSeconds} seconds</li>
+          <li>{playlist[2].artist}: {artistThreeSeconds} seconds</li>
+        </ul>
+        
+      </div>
 
-  </ul>
+    <button className="simulate-payout-button" onClick={handlePaymentToArtists} disabled={!isConnected}>
+     Simulate Payment To Artists
+     </button>
 
-</div>
-
-<button 
-  onClick={handlePaymentToArtists}
-  disabled={!isConnected}
->
-  End Subscription
-</button>
-
-
-      
       <AudioPlayer
         src={playlist[currentTrack].src}
         header={`${playlist[currentTrack].artist} - ${playlist[currentTrack].title}`}
@@ -156,18 +154,7 @@ const PageThree = () => {
         listenInterval={1000}
         onListen={handleListeningTime}
       />
-
-
-{hash && (
-  <div>
-    <p>Transaction: {hash}</p>
-  </div>
-)}
-
-
-    
- 
-  </>
+    </div>
   )
 }
 

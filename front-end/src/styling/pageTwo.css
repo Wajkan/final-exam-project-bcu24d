@@ -1,0 +1,64 @@
+.page-two-wrapper {
+
+  max-width: 600px;
+  margin: auto;
+
+}
+
+.artist-list {
+
+    border: 2px solid #333;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+
+}
+
+.artist-list h2 {
+
+    text-align: center;
+
+}
+
+.artist-list ul {
+
+    list-style: none;
+    padding: 15px;
+
+}
+
+.artist-list ul li {
+
+    font-size: 1rem;
+    padding: 10px;
+
+}
+
+
+.accountbalances-list {
+
+    border: 2px solid #333;
+    border-radius: 4px;
+    padding: 15px;
+
+}
+
+.accountbalances-list h2 {
+
+     text-align: center;
+
+}
+
+.accountbalances-list ul {
+
+    list-style: none;
+    padding: 15px;
+
+}
+
+.accountbalances-list li {
+
+    font-size: 1rem;
+    padding: 10px;
+
+}

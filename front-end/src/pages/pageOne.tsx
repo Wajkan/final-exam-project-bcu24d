@@ -1,25 +1,41 @@
 import { useWriteContract, useConnection, useReadContract } from 'wagmi'
 import { parseEther } from 'viem'
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../config/smartConfig'
+import '../styling/pageOne.css'
 
 const PageOne = () => {
   
-
+  // Wagmi
   const { address, isConnected } = useConnection();
   const  writeContract  = useWriteContract();
 
-  
-  const result = useReadContract({
+
+  // Confirm a user has a active subscription
+  const subscription = useReadContract({
 
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
-    functionName: 'hasActiveSubscription',
+    functionName: 'subscriptions',
     args: address ? [address] : undefined,
 
-  });
+  })
 
 
-  
+  // Format the date
+  const formatDate = (timestamp: any) => {
+
+    if (!timestamp) {
+      return 'no timestamp found'
+    }
+
+    const date = new Date(Number(timestamp) * 1000)
+
+    return date.toLocaleString()
+
+  }
+
+
+  // Confirm Subscription
   const handleSubscribe = () => {
 
     writeContract.mutate(
@@ -46,32 +62,45 @@ const PageOne = () => {
     )
   }
 
+  // console.log(subscription.data)
 
 
-  return (
+return (
 
-    <div>
+<div className='page-one-wrapper'>
 
-          <h1>Subscribe</h1>
+      <h1>Subscribe</h1>
 
-          {!isConnected && <p>Please connect your wallet first</p>}
-                
-          {result.data ? (
+      {!isConnected && <p>Please connect your wallet first</p>}
+            
+    {subscription.data?.[0] ? (
 
-            <button>Subscription Active ✅</button>
+        <div className='subscription-confirmed-wrapper'>
+          
+          <button className="subscription-active-button">
+            Subscription Active ✅
+          </button>
+          
+          <div className="subscription-details">
 
-          ) : (
+            <h2>Subscription Details</h2>
+            <p>Wallet: {address}</p>
+            <p>Expires: {formatDate(subscription.data?.[2])}</p>
 
-            <button onClick={handleSubscribe} disabled={!isConnected}>
 
-              Subscribe (0.02 ETH)
+          </div>
 
-            </button>
+        </div>
 
-          )}
+        ) : (
+
+        <button className="subscribe-button" onClick={handleSubscribe} disabled={!isConnected}>
+          Subscribe (0.02 ETH)
+        </button>
+
+      )}
 
     </div>
-
   )
 }
 
