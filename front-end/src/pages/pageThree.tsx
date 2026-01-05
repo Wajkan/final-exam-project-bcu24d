@@ -3,7 +3,7 @@ import AudioPlayer from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css'
 import '../styling/AudioPlayer.css'
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../config/smartConfig'
-import { useWriteContract, useConnection } from 'wagmi'
+import { useWriteContract, useConnection, useReadContract } from 'wagmi'
 import '../styling/pageThree.css'
 
 interface Track {
@@ -53,7 +53,7 @@ const PageThree = () => {
 
   // Wagmi
   const { address, isConnected } = useConnection()
-  const writeContract = useWriteContract()
+  const writeContract  = useWriteContract()
 
 
   // Change track
@@ -101,7 +101,6 @@ const PageThree = () => {
     }
   }
 
-
   // Send seconds played to smart contract
   const handlePaymentToArtists = () => {
 
@@ -113,7 +112,7 @@ const PageThree = () => {
 
     console.log('Paying out based on seconds:', listeningSeconds)
 
-    writeContract.mutate({
+     writeContract.mutate({
       address: CONTRACT_ADDRESS,
       abi: CONTRACT_ABI,
       functionName: 'payoutToArtists',
@@ -121,6 +120,17 @@ const PageThree = () => {
     })
 
   }
+
+
+  // Get subscription info
+  const subscription = useReadContract({
+
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: 'subscriptions',
+    args: address ? [address] : undefined,
+
+  })
 
 
   return (
@@ -139,9 +149,11 @@ const PageThree = () => {
         
       </div>
 
-    <button className="simulate-payout-button" onClick={handlePaymentToArtists} disabled={!isConnected}>
-     Simulate Payment To Artists
-     </button>
+      {subscription.data?.[0] && (
+        <button className="simulate-payout-button" onClick={handlePaymentToArtists} disabled={!isConnected}>
+          Simulate Payment To Artists
+        </button>
+      )}
 
       <AudioPlayer
         src={playlist[currentTrack].src}

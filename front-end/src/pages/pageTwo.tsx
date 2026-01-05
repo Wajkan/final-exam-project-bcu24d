@@ -10,7 +10,7 @@ const PageTwo = () => {
 
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
-    functionName: 'getArtists',
+    functionName: 'viewAllRegisteredArtists',
 
   })
 
@@ -18,19 +18,19 @@ const PageTwo = () => {
   // Get their balances to display
   const artistOneBalance = useBalance({
 
-    address: result.data?.[0]
+    address: result.data?.[0]?.wallet
 
   })
 
   const artistTwoBalance = useBalance({
 
-    address: result.data?.[1]
+    address: result.data?.[1]?.wallet
 
   })
 
   const artistThreeBalance = useBalance({
 
-    address: result.data?.[2]
+    address: result.data?.[2]?.wallet
 
   })
 
@@ -47,10 +47,12 @@ const PageTwo = () => {
       <h2>Registered Artists</h2>
 
       {result.data?.map((artist, index) => (
+            
+            <li key={index}>
 
-        <li key={index}>
-          Artist {index}: {artist}
-        </li>
+             Artist Name: {artist.name} - Artist Wallet: {artist.wallet} - Total Earnings: {artist.totalAmountEarned}
+              
+            </li> 
 
       ))}
 
@@ -62,13 +64,21 @@ const PageTwo = () => {
 
     <h2>Balances</h2>
 
-    <ul>
+      <ul>
 
-      <li>Artist 0: {artistOneBalance.data ? formatEther(artistOneBalance.data.value) : 'reading balance...'} ETH</li>
-      <li>Artist 1: {artistTwoBalance.data ? formatEther(artistTwoBalance.data.value) : 'reading balance...'} ETH</li>
-      <li>Artist 2: {artistThreeBalance.data ? formatEther(artistThreeBalance.data.value) : 'reading balance...'} ETH</li>
+          <li>
+            {result.data?.[0]?.name}: {artistOneBalance.data ? formatEther(artistOneBalance.data.value) : 'reading...'} ETH
+          </li>
 
-    </ul>
+          <li>
+            {result.data?.[1]?.name}: {artistTwoBalance.data ? formatEther(artistTwoBalance.data.value) : 'reading...'} ETH
+          </li>
+
+          <li>
+            {result.data?.[2]?.name}: {artistThreeBalance.data ? formatEther(artistThreeBalance.data.value) : 'reading...'} ETH
+          </li>
+
+      </ul>
 
     </div>
 

@@ -10,7 +10,7 @@ const PageOne = () => {
   const  writeContract  = useWriteContract();
 
 
-  // Confirm a user has a active subscription
+  // Get subscription info
   const subscription = useReadContract({
 
     address: CONTRACT_ADDRESS,
