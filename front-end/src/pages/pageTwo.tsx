@@ -50,7 +50,13 @@ const PageTwo = () => {
             
             <li key={index}>
 
-             Artist Name: {artist.name} - Artist Wallet: {artist.wallet} - Total Earnings: {artist.totalAmountEarned}
+               <div>
+                
+                  <p>Artist Name: {artist.name}</p>
+                  <p>Wallet: {artist.wallet}</p>
+                  <p>Total Earnings: {formatEther(artist.totalAmountEarned)} ETH</p>
+
+               </div>
               
             </li> 
 
