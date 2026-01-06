@@ -7,8 +7,6 @@
 
 .artist-list {
 
-    border: 2px solid #333;
-    border-radius: 4px;
     padding: 15px;
     margin-bottom: 10px;
 
@@ -37,8 +35,6 @@
 
 .accountbalances-list {
 
-    border: 2px solid #333;
-    border-radius: 4px;
     padding: 15px;
 
 }

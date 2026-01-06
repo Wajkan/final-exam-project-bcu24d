@@ -8,7 +8,6 @@ const Home = () => {
         
         <p>This is a concept music platform were every user directly supports their artists</p>
         <p>I want to demonstrate that with the use of smart-contracts and blockchain technology we could provide a transparent payment system between artists and users.</p>
-        <p>By eliminating the use of music for profits i hope that one day it can return to the artists and fans as intended.</p>
         <p>Creating a platform owned by the artists themselfs could unify music worldwide, while keeping the music accessible for everyone.</p>
 
 
