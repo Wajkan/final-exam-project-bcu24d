@@ -1,0 +1,50 @@
+.page-three-wrapper {
+
+  max-width: 600px;
+  margin: auto;
+
+}
+
+.listening-time {
+
+   
+    padding: 15px;
+
+}
+
+.listening-time h2 {
+
+    text-align: center;
+
+}
+
+.listening-time ul {
+
+    list-style: none;
+    padding: 15px;
+
+}
+
+.listening-time ul li {
+
+    font-size: 1rem;
+    padding: 10px;
+
+}
+
+
+.simulate-payout-button {
+
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+    
+
+}
