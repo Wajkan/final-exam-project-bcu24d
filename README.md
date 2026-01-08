@@ -2,14 +2,14 @@
 
 # This is my attempt to utilize smart contract and blockchain technology to create a fair platform between artists and users. 
 
-# open terminal cd into front end folder
-# npm install dependencies 
-# npm run dev to run front end application
+1. open terminal cd into front end folder
+2. npm install dependencies  
+3. npm run dev to run front end application
 
 
-# run anvil locally in ubuntu
-# open a new ubuntu termial and cd into smart-contract folder
-# use following commands
+4. run anvil locally in ubuntu
+5. open a new ubuntu termial and cd into smart-contract folder
+6. use following commands:
 
 // BROADCAST CONTRACT
 
@@ -50,8 +50,8 @@ cast send 0x5FbDB2315678afecb367f032d93F642f64180aa3 \
 
 cast send <metamask-address> --value 10ether --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --rpc-url http://127.0.0.1:8545/
 
-
-# start by subscribe to the platform ( minor bug,  you need to update the page to see your subscription confirmation ).
-# view artists , their wallets and total earnings on the artists page.
-# play music in the media player,   then press "simulate payment to artists" to confirm and simulate your subscription.
-# go back to the artist page to view how the subscription was distributed.
+How the platform is used:
+start by subscribe to the platform ( minor bug,  you need to update the page to see your subscription confirmation ).
+view artists , their wallets and total earnings on the artists page.
+play music in the media player,   then press "simulate payment to artists" to confirm and simulate your subscription.
+go back to the artist page to view how the subscription was distributed.
